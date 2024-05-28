@@ -1,28 +1,45 @@
 package com.tracker.application.job.controller;
 
-import com.tracker.application.job.model.User;
-import com.tracker.application.job.repository.UserRepository;
+import com.jat.UserApi;
+import com.jat.model.RegisterUserRequest;
+import com.tracker.application.job.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
+/**
+ * This Rest Controller contains all APIs associated with user details.
+ *
+ * @author Praveen J
+ */
 @RestController
 @AllArgsConstructor
-public class UserController {
+@RequestMapping("/user")
+public class UserController implements UserApi {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    @PostMapping("/user")
-    public void createUser(@RequestBody User user) {
-        System.out.println("User details -> " + user);
-        this.userRepository.save(user);
+    /**
+     * This API registers user with the system
+     *
+     * @param registerUserRequest
+     * @return 200 OK after successful registration
+     */
+    @Override
+    @PostMapping("/register")
+    public ResponseEntity<Void> registerUser(@Valid RegisterUserRequest registerUserRequest) {
+        // calling service method to register user
+        this.userService.registerUser(registerUserRequest);
 
-    }
-
-    @GetMapping("/user/{emailId}")
-    public User getUser(@PathVariable(value = "emailId") String emailId) {
-        return this.userRepository.findById(emailId).get();
+        // returning 200 OK after successful registration
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
