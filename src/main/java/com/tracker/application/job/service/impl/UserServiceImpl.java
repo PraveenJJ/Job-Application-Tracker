@@ -6,7 +6,7 @@ import com.tracker.application.job.model.User;
 import com.tracker.application.job.model.enums.JATError;
 import com.tracker.application.job.repository.UserRepository;
 import com.tracker.application.job.service.UserService;
-import com.tracker.application.job.utility.UserUtility;
+import com.tracker.application.job.utility.JatUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // saving new user details
-        this.saveUserInDB(UserUtility.map(registerUserRequest));
+        this.saveUserInDB(JatUtility.map(registerUserRequest));
     }
 
     @Transactional
